@@ -1,0 +1,151 @@
+## Arquitetura Geral da Aplicação (MVP)
+A aplicação será baseada em uma arquitetura modularizada por domínio, seguindo princípios do Domain-Driven Design (DDD), com separação clara entre frontend, backend e persistência de dados. A interface será mobile-first, responsiva e acessível via navegador.
+
+### Módulos de Domínio
+1. Usuário
+Cadastro de usuário (nome, e-mail, senha, avatar).
+
+Autenticação e autorização.
+
+Associação com famílias ou grupos.
+
+2. Família/Grupo
+Criação e gerenciamento de um grupo doméstico.
+
+Convite de membros por link ou e-mail.
+
+Definição de regras e preferências do grupo.
+
+3. Atividade
+Catálogo de atividades (ex: lavar louça, passear com o cachorro).
+
+Registro de atividades realizadas.
+
+Visualização rápida por ícones clicáveis.
+
+Opção de adicionar atividades personalizadas.
+
+4. Histórico e Estatísticas
+Linha do tempo das atividades.
+
+Ranking por membro (ex: quem fez mais tarefas na semana).
+
+Filtros por período (dia, semana, mês, ano).
+
+Exportação de dados (CSV, PDF).
+
+### Requisitos Funcionais (RF)
+RF01. O sistema deve permitir que usuários se cadastrem e façam login.
+RF02. O sistema deve permitir que usuários criem e entrem em grupos de família.
+RF03. O sistema deve exibir um painel com ícones de atividades para registro rápido.
+RF04. O sistema deve registrar a atividade com data, hora e autor.
+RF05. O sistema deve permitir visualizar o histórico de atividades por período.
+RF06. O sistema deve mostrar estatísticas de contribuição por usuário.
+RF07. O sistema deve permitir que usuários adicionem novas atividades personalizadas.
+RF08. O sistema deve funcionar bem em dispositivos móveis.
+RF09. O sistema deve permitir a exportação dos dados registrados.
+
+### Requisitos Não Funcionais (RNF)
+RNF01. O sistema deve ter interface responsiva (mobile-first).
+RNF02. O tempo de resposta para registrar uma atividade deve ser inferior a 1 segundo.
+RNF03. O sistema deve suportar até 50 usuários simultâneos no MVP.
+RNF04. A autenticação deve usar JWT (JSON Web Tokens) para sessões seguras.
+RNF05. Os dados devem ser armazenados de forma segura e encriptada (ex: senhas com bcrypt).
+RNF06. O backend deve ser desenvolvido com API RESTful.
+RNF07. A aplicação deve estar disponível 24/7 com no mínimo 99% de uptime.
+
+### Requisitos de Arquitetura
+# Backend
+Linguagem: Go (Golang)
+
+Framework: Fiber (rápido, inspirado em Express) ou Gin
+
+ORM: Ent (modelagem tipada mais moderna)
+
+Autenticação: JWT (com middleware no Fiber/Gin)
+
+Validação: go-playground/validator
+
+Banco de Dados: PostgreSQL (via Ent)
+
+Migrations: golang-migrate
+
+# Frontend
+Framework: React (mantém ótima sinergia com APIs REST)
+
+Estilo: TailwindCSS (mobile-first)
+
+State Management: TanStack Query (ex-React Query) para cache/API
+
+# Testes e Qualidade
+Testes Unitários: testing + stretchr/testify
+
+Linting: golangci-lint
+
+Coverage: go test -cover
+### Interface de Usuário
+Home: Grade de ícones de tarefas com botão "Registrar".
+
+Histórico: Lista ou gráfico com atividades por usuário e período.
+
+Estatísticas: Barras, pizza ou radar para ver contribuições.
+
+Perfil: Dados pessoais e configurações.
+
+Admin do Grupo: Controle de membros e preferências do grupo.
+
+### Organização por Módulos (Go)
+Usando uma estrutura limpa e modular inspirada no Clean Architecture / Hexagonal, os módulos podem ser separados assim:
+
+/internal
+  /user           # Cadastro, login, autenticação
+  /group          # Criação e associação de grupos/famílias
+  /activity       # Catálogo e registro de atividades
+  /history        # Histórico de ações realizadas
+  /stats          # (Pós-MVP) geração de estatísticas
+  /shared         # utilitários, middlewares, autenticação, etc.
+
+/cmd
+  /api            # inicialização do servidor HTTP
+
+/pkg
+  /db             # repositórios, migrações, conexão
+
+/config
+  /env            # variáveis de ambiente
+
+
+### Endpoints REST básicos (MVP)
+
+Método	Endpoint	Descrição
+POST	/api/register	Cadastrar usuário
+POST	/api/login	Login e geração de token
+GET	/api/activities	Listar atividades disponíveis
+POST	/api/activities/log	Registrar atividade realizada
+GET	/api/history	Histórico por período
+POST	/api/group	Criar grupo
+POST	/api/group/join	Entrar em grupo com código
+GET	/api/me	Dados do usuário logado
+
+
+### Pode ser adicionado depois (pós-MVP)
+Esses itens são legais, mas podem ser deixados para depois que o MVP estiver validado:
+
+Estatísticas visuais de contribuição (RF06) → substituível por um histórico simples inicialmente.
+
+Adição de atividades personalizadas (RF07) → pode começar com um conjunto fixo e expandir depois.
+
+Exportação dos dados (RF09) → pouco usada no início, pode vir numa versão futura.
+
+Convite de membros via link/e-mail (parte de RF02) → início manual já serve.
+
+Ranking de usuários ou gamificação (relacionado ao módulo de estatísticas).
+
+Login social (Google, Apple) → login por e-mail e senha já atende inicialmente.
+
+Tela de perfil ou configurações avançadas.
+
+Segurança avançada e criptografia de dados sensíveis além de senhas (RNF05).
+
+Logging, monitoramento e testes automatizados extensivos (RNF07) → bons, mas podem evoluir conforme necessidade.
+
