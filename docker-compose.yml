@@ -28,5 +28,15 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  migrate:
+    image: postgres:15
+    command: >
+      bash -c "for f in /migrations/*.sql; do echo 'Running migration: $$f'; psql -h db -U postgres -d appfamily -f \"$$f\"; done"
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./backend/scripts/migrations:/migrations
+    depends_on:
+      - db
 volumes:
   pgdata:
