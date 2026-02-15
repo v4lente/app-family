@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Family - Controle de Tarefas</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">App Family</p>
+          <h1>Controle de tarefas diárias da família</h1>
+          <p class="subtitle">
+            Organize atividades domésticas, acompanhe o progresso e visualize estatísticas por
+            familiar.
+          </p>
+          <p id="api-status" class="muted">Status da API: verificando...</p>
+        </div>
+        <button class="google-button" type="button">
+          <span class="google-dot"></span>
+          Entrar com Google
+        </button>
+      </header>
+
+      <main class="app-grid">
+        <section class="card">
+          <h2>Cadastro rápido da família</h2>
+          <p class="muted">
+            Adicione integrantes para começar a distribuir tarefas e acompanhar o desempenho.
+          </p>
+          <form id="member-form" class="stack">
+            <label class="field">
+              Nome do familiar
+              <input name="memberName" type="text" placeholder="Ex.: Maria" required />
+            </label>
+            <label class="field">
+              Perfil
+              <select name="memberRole">
+                <option value="Responsável">Responsável</option>
+                <option value="Filho(a)">Filho(a)</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Adicionar familiar</button>
+          </form>
+          <ul id="member-list" class="pill-list"></ul>
+        </section>
+
+        <section class="card">
+          <h2>Nova tarefa doméstica</h2>
+          <p class="muted">Distribua atividades diárias, semanais ou recorrentes.</p>
+          <form id="task-form" class="stack">
+            <label class="field">
+              Tarefa
+              <input name="taskTitle" type="text" placeholder="Ex.: Lavar louça" required />
+            </label>
+            <label class="field">
+              Categoria
+              <select name="taskCategory">
+                <option value="Limpeza">Limpeza</option>
+                <option value="Organização">Organização</option>
+                <option value="Cozinha">Cozinha</option>
+                <option value="Compras">Compras</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </label>
+            <label class="field">
+              Responsável
+              <select name="taskOwner" id="task-owner"></select>
+            </label>
+            <label class="field">
+              Frequência
+              <select name="taskFrequency">
+                <option value="Diária">Diária</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Quinzenal">Quinzenal</option>
+                <option value="Mensal">Mensal</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Criar tarefa</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>Atividades em andamento</h2>
+          <p class="muted">Marque tarefas como concluídas para atualizar o dashboard.</p>
+          <div id="task-list" class="task-list"></div>
+        </section>
+
+        <section class="card">
+          <h2>Dashboard estatístico</h2>
+          <p class="muted">Resumo das tarefas concluídas por familiar e por categoria.</p>
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="category-summary" id="category-summary"></div>
+        </section>
+        <section class="card">
+          <h2>Ranking da família</h2>
+          <p class="muted">Membros mais ativos por tarefas concluídas.</p>
+          <ol id="ranking-list" class="ranking-list"></ol>
+        </section>
+
+      </main>
+
+      <section class="card highlight">
+        <h2>Como funciona a autenticação</h2>
+        <p>
+          Esta versão de demonstração mostra a entrada com Google como botão de autenticação. Na
+          implementação completa, o app usa o Google OAuth para criar contas seguras e sincronizar
+          o histórico das tarefas da família.
+        </p>
+      </section>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
